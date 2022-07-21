@@ -36,6 +36,9 @@ class Server {
     // Desplegar el directorio publico
     this.app.use(express.static(path.resolve(__dirname, "../public")));
     this.app.use(cors());
+
+    // API: Endpoints
+    this.app.use("/api/login", require("../routes/auth"));
   }
 
   execute() {
