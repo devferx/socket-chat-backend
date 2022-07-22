@@ -1,4 +1,5 @@
-const { response } = require("express");
+const { request, response } = require("express");
+const { validationResult } = require("express-validator");
 
 async function createUser(req, res = response) {
   res.json({
@@ -8,10 +9,23 @@ async function createUser(req, res = response) {
   });
 }
 
-async function login(req, res = response) {
+async function login(req = request, res = response) {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      ok: false,
+      errors: errors.mapped(),
+    });
+  }
+
+  const { email, password } = req.body;
+
   res.json({
     ok: true,
     msg: "Login successful",
+    email,
+    password,
   });
 }
 

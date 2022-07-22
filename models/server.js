@@ -35,7 +35,12 @@ class Server {
   middlewares() {
     // Desplegar el directorio publico
     this.app.use(express.static(path.resolve(__dirname, "../public")));
+
+    // Cors
     this.app.use(cors());
+
+    // Body parser
+    this.app.use(express.json());
 
     // API: Endpoints
     this.app.use("/api/login", require("../routes/auth"));
