@@ -42,12 +42,41 @@ async function createUser(req, res = response) {
 async function login(req = request, res = response) {
   const { email, password } = req.body;
 
-  res.json({
-    ok: true,
-    msg: "Login successful",
-    email,
-    password,
-  });
+  try {
+    const userDB = await User.findOne({ email });
+
+    if (!userDB) {
+      return res.status(404).json({
+        ok: false,
+        msg: "The user does not exist",
+      });
+    }
+
+    const validPassword = await bcrypt.compare(password, userDB.password);
+
+    if (!validPassword) {
+      return res.status(400).json({
+        ok: false,
+        msg: "Invalid password",
+      });
+    }
+
+    const token = await generateJWT(userDB.id);
+
+    res.json({
+      ok: true,
+      msg: "Login successful",
+      user: userDB,
+      token,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      ok: false,
+      msg: "Error in the server",
+    });
+  }
 }
 
 async function renewToken(req, res = response) {
