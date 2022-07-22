@@ -4,12 +4,12 @@ const MessageSchema = Schema(
   {
     from: {
       type: Schema.Types.ObjectId,
-      ref: "Usuario",
+      ref: "User",
       required: true,
     },
     to: {
       type: Schema.Types.ObjectId,
-      ref: "Usuario",
+      ref: "User",
       required: true,
     },
     message: {
