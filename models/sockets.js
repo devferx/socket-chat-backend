@@ -6,10 +6,15 @@ class Sockets {
 
   socketEvents() {
     this.io.on("connection", (socket) => {
-      // Escuchar evento: mensaje-to-server
-      socket.on("mensaje-to-server", (data) => {
-        this.io.emit("mensaje-from-server", data);
-      });
+      // TODO: Validate JWT
+      // If token is not valid, disconnect socket
+      // TODO: View who user is connected
+      // TODO: Emit all user connected
+      // TODO: Socket join
+      // TODO: Listen when client send a message
+      // TODO: Disconnet
+      // Set in the DB that the user disconneted
+      // TODO: Emit all user conected
     });
   }
 }
