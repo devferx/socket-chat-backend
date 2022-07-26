@@ -44,6 +44,7 @@ class Server {
 
     // API: Endpoints
     this.app.use("/api/login", require("../routes/auth"));
+    this.app.use("/api/messages", require("../routes/messages"));
   }
 
   execute() {
