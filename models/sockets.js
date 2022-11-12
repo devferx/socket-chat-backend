@@ -1,4 +1,8 @@
-const { userConnected, userDisconnected } = require("../controllers/sockets");
+const {
+  userConnected,
+  userDisconnected,
+  getUsers,
+} = require("../controllers/sockets");
 const { verifyJWT } = require("../helpers/jwt");
 
 class Sockets {
@@ -23,6 +27,7 @@ class Sockets {
       // If token is not valid, disconnect socket
       // TODO: View who user is connected
       // TODO: Emit all user connected
+      this.io.emit("user-list", await getUsers());
       // TODO: Socket join
       // TODO: Listen when client send a message
       // TODO: Disconnet
@@ -31,7 +36,7 @@ class Sockets {
 
       socket.on("disconnect", async () => {
         await userDisconnected(uid);
-        console.log("Cliente desconectado", uid);
+        this.io.emit("user-list", await getUsers());
       });
     });
   }
