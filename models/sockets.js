@@ -1,3 +1,4 @@
+const { userConnected, userDisconnected } = require("../controllers/sockets");
 const { verifyJWT } = require("../helpers/jwt");
 
 class Sockets {
@@ -7,13 +8,15 @@ class Sockets {
   }
 
   socketEvents() {
-    this.io.on("connection", (socket) => {
+    this.io.on("connection", async (socket) => {
       const [isValid, uid] = verifyJWT(socket.handshake.query["x-token"]);
 
       if (!isValid) {
         console.log("socket no identificado");
         return socket.disconnect();
       }
+
+      await userConnected(uid);
 
       console.log("Cliente conectado", uid);
       // TODO: Validate JWT
@@ -26,7 +29,8 @@ class Sockets {
       // Set in the DB that the user disconneted
       // TODO: Emit all user conected
 
-      socket.on("disconnect", () => {
+      socket.on("disconnect", async () => {
+        await userDisconnected(uid);
         console.log("Cliente desconectado", uid);
       });
     });
