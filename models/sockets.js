@@ -2,6 +2,7 @@ const {
   userConnected,
   userDisconnected,
   getUsers,
+  saveMessage,
 } = require("../controllers/sockets");
 const { verifyJWT } = require("../helpers/jwt");
 
@@ -33,7 +34,9 @@ class Sockets {
       this.io.emit("user-list", await getUsers());
       // TODO: Socket join
       // TODO: Listen when client send a message
-      socket.on("private-message", (payload) => {
+      socket.on("private-message", async (payload) => {
+        const message = await saveMessage(payload);
+        console.log(message);
         console.log(payload);
       });
       // TODO: Disconnet
