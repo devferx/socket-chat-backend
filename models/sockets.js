@@ -23,6 +23,9 @@ class Sockets {
       await userConnected(uid);
 
       console.log("Cliente conectado", uid);
+      // Join user to a room of socket.io
+      socket.join(uid);
+
       // TODO: Validate JWT
       // If token is not valid, disconnect socket
       // TODO: View who user is connected
@@ -30,6 +33,9 @@ class Sockets {
       this.io.emit("user-list", await getUsers());
       // TODO: Socket join
       // TODO: Listen when client send a message
+      socket.on("private-message", (payload) => {
+        console.log(payload);
+      });
       // TODO: Disconnet
       // Set in the DB that the user disconneted
       // TODO: Emit all user conected
