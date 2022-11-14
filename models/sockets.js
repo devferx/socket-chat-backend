@@ -36,8 +36,8 @@ class Sockets {
       // TODO: Listen when client send a message
       socket.on("private-message", async (payload) => {
         const message = await saveMessage(payload);
-        console.log(message);
-        console.log(payload);
+        this.io.to(payload.to).emit("private-message", message);
+        this.io.to(payload.from).emit("private-message", message);
       });
       // TODO: Disconnet
       // Set in the DB that the user disconneted
