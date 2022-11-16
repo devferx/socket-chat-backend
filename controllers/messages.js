@@ -12,7 +12,7 @@ async function getChat(req = request, res = response) {
       { from: messagesFrom, to: userId },
     ],
   })
-    .sort({ createdAt: "asc" })
+    .sort({ createdAt: "desc" })
     .limit(30);
 
   res.json({
